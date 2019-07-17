@@ -26,6 +26,9 @@
 ;; higher-order int->int->int functions
 (define int-int-functions (list + -))
 (define int-int-functions-str (list "+" "-"))
+;; filter functions
+(define pred-functions (list even? odd?))
+(define pred-functions-str (list "even?" "odd?"))
 
 (define rxMap-op
   (operator "rxMap"
