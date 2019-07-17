@@ -9,8 +9,14 @@
 (define (get-insn-from-sketch sk insn-idx)
   (list-ref (sketch-insns sk) (- insn-idx (sketch-input-count sk))))
 
-(define (print-rxjs-program sk)
-  (print-rxjs-insn sk (sketch-retval-idx sk)))
+(define (print-rxjs-program sk [funcname "synthedFunc"])
+  (string-append "function "
+                 funcname
+                 "("
+                 (string-join (for/list ([i (range (sketch-input-count sk))]) (format "input~a" i)) ", ")
+                 ") { return "
+                 (print-rxjs-insn sk (sketch-retval-idx sk))
+                 "; }"))
 
 (define (print-rxjs-insn sk insn-idx)
   (if (< insn-idx (sketch-input-count sk))

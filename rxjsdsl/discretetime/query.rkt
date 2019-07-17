@@ -3,6 +3,7 @@
 (require "model.rkt")
 (require "sketch.rkt")
 (require "api.rkt")
+(require "printrxjs.rkt")
 
 (provide make-synthesis-query)
 
@@ -35,6 +36,7 @@
                                                (assert (equal? (list-ref evaled-inputs2 i)
                                                                (list-ref (map traces-output (synth-query-trace-list query)) i))))))])
           (if (unsat? m2)
-              (query-result 1 (string-from-sketch (evaluate sk m) "candidate-func") "" '())
-              (query-result 2 (string-from-sketch (evaluate sk m) "candidate-func1")
-                            (string-from-sketch (evaluate sk2 m2) "candidate-func2") (evaluate sym-inputs m2)))))))
+              (query-result 1 (print-rxjs-program (evaluate sk m)) "" '())
+              (query-result 2 (print-rxjs-program (evaluate sk m) "candidateFunc1")
+                             (print-rxjs-program (evaluate sk2 m2) "candidateFunc2")
+                             (evaluate sym-inputs m2)))))))
