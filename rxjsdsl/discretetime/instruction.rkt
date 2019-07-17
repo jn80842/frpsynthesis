@@ -19,7 +19,7 @@
 ;; the instruction would be {0 0 2}
 
 (struct insn
-  (op-idx input-idx1 input-idx2 argfunc-idx1) #:transparent)
+  (op-idx input-idx1 input-idx2 argfunc-idx1 const-int) #:transparent)
 
 ;; helpers
 
@@ -35,6 +35,9 @@
 (define (get-argfunc insn argfuncs)
   (list-ref argfuncs (insn-argfunc-idx1 insn)))
 
+(define (get-const insn)
+  (insn-const-int insn))
+
 ;; create symbolic instructions
 
 (define (make-sym-insn)
@@ -42,7 +45,8 @@
   (define-symbolic* input-idx1 integer?)
   (define-symbolic* input-idx2 integer?)
   (define-symbolic* argfunc-idx1 integer?)
-  (insn op-idx input-idx1 input-idx2 argfunc-idx1))
+  (define-symbolic* const-int integer?)
+  (insn op-idx input-idx1 input-idx2 argfunc-idx1 const-int))
 
 (define (make-sym-insn-list count)
   (for/list ([i (range count)])

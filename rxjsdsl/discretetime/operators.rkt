@@ -30,13 +30,33 @@
 (define pred-functions (list even? odd?))
 (define pred-functions-str (list "even?" "odd?"))
 
+(define rxCombineLatest-op
+  (operator "rxCombineLatest"
+            (λ (reg-insn past-vars) (rxCombineLatest (get-input-stream1 reg-insn past-vars)
+                                                     (get-input-stream2 reg-insn past-vars)))
+            (λ (reg-insn past-vars) (format "~a ~a"
+                                            (get-input-stream1 reg-insn past-vars)
+                                            (get-input-stream2 reg-insn past-vars)))))
+
+(define rxDistinct-op
+  (operator "rxDistinct"
+            (λ (reg-insn past-vars) (rxDistinct (get-input-stream1 reg-insn past-vars)))
+            (λ (reg-insn past-vars) (format "~a" (get-input-stream1 reg-insn past-vars)))))
+
+(define rxFilter-op
+  (operator "rxFilter"
+            (λ (reg-insn past-vars) (rxFilter (get-argfunc reg-insn pred-functions)
+                                              (get-input-stream1 reg-insn past-vars)))
+            (λ (reg-insn past-vars) (format "~a ~a"
+                                            (get-argfunc reg-insn pred-functions-str)
+                                            (get-input-stream1 reg-insn past-vars)))))
 (define rxMap-op
   (operator "rxMap"
             (λ (reg-insn past-vars) (rxMap (get-argfunc reg-insn int-functions)
                                            (get-input-stream1 reg-insn past-vars)))
             (λ (reg-insn past-vars) (format "~a ~a"
                                             (get-argfunc reg-insn int-functions-str)
-                                           (get-input-stream1 reg-insn past-vars)))))
+                                            (get-input-stream1 reg-insn past-vars)))))
 
 (define rxMerge-op
   (operator "rxMerge"
@@ -46,6 +66,11 @@
                                             (get-input-stream1 reg-insn past-vars)
                                             (get-input-stream2 reg-insn past-vars)))))
 
+(define rxPairwise-op
+  (operator "rxPairwise"
+            (λ (reg-insn past-vars) (rxPairwise (get-input-stream1 reg-insn past-vars)))
+            (λ (reg-insn past-vars) (format "~a" (get-input-stream1 reg-insn past-vars)))))
+
 (define rxScan-op
   (operator "rxScan"
             (λ (reg-insn past-vars) (rxScan (get-argfunc reg-insn int-int-functions)
@@ -54,8 +79,30 @@
                                             (get-argfunc reg-insn int-int-functions)
                                             (get-input-stream1 reg-insn past-vars)))))
 
-(define operator-list (list rxMap-op rxMerge-op rxScan-op))
-(define operator-id-lookup (make-hash (list (cons "rxMap" 0)
-                                            (cons "rxMerge" 1)
-                                            (cons "rxScan" 2))))
+(define rxSkip-op
+  (operator "rxSkip"
+            (λ (reg-insn past-vars) (rxSkip (get-const reg-insn)
+                                            (get-input-stream1 reg-insn past-vars)))
+            (λ (reg-insn past-vars) (format "~a ~a"
+                                            (get-const reg-insn)
+                                            (get-input-stream1 reg-insn past-vars)))))
+
+(define rxTake-op
+  (operator "rxTake"
+            (λ (reg-insn past-vars) (rxTake (get-const reg-insn)
+                                            (get-input-stream1 reg-insn past-vars)))
+            (λ (reg-insn past-vars) (format "~a ~a"
+                                            (get-const reg-insn)
+                                            (get-input-stream1 reg-insn past-vars)))))
+
+(define operator-list (list rxCombineLatest-op rxDistinct-op rxFilter-op rxMap-op rxMerge-op rxPairwise-op rxScan-op rxSkip-op rxTake-op))
+(define operator-id-lookup (make-hash (list (cons "rxCombineLatest" 0)
+                                            (cons "rxDistinct" 1)
+                                            (cons "rxFilter" 2)
+                                            (cons "rxMap" 3)
+                                            (cons "rxMerge" 4)
+                                            (cons "rxPairwise" 5)
+                                            (cons "rxScan" 6)
+                                            (cons "rxSkip" 7)
+                                            (cons "rxTake" 8))))
 

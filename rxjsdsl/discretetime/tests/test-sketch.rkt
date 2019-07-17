@@ -7,8 +7,8 @@
 (require "../sketch.rkt")
 
 ;; stream.map(add1).scan(+)
-(define sk1 (sketch (list (insn (hash-ref operator-id-lookup "rxMap") 0 9 0)
-                          (insn (hash-ref operator-id-lookup "rxScan") 1 9 0))
+(define sk1 (sketch (list (insn (hash-ref operator-id-lookup "rxMap") 0 9 0 0)
+                          (insn (hash-ref operator-id-lookup "rxScan") 1 9 0 0))
                     2
                     1))
 

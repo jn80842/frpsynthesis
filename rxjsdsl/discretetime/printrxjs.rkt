@@ -67,12 +67,12 @@
 (define (print-rxjs-skip sk insn-idx)
   (let ([current-insn (get-insn-from-sketch sk insn-idx)])
     (print-rxjs-const-arg "skip" (print-rxjs-insn sk (insn-input-idx1 current-insn))
-                          (insn-argfunc-idx1 current-insn))))
+                          (insn-const-int current-insn))))
 
 (define (print-rxjs-take sk insn-idx)
   (let ([current-insn (get-insn-from-sketch sk insn-idx)])
     (print-rxjs-const-arg "take" (print-rxjs-insn sk (insn-input-idx1 current-insn))
-                          (insn-argfunc-idx1 current-insn))))
+                          (insn-const-int current-insn))))
 
 (define (lookup-operator-print operator-idx)
   (list-ref (list print-rxjs-combineLatest
