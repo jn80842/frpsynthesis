@@ -2,18 +2,14 @@
 
 #lang racket/base
 
+(require json)
 (require "api.rkt")
 (require "query.rkt")
 
 (define args (current-command-line-arguments))
-(define input-filename (vector-ref args 0))
-(define output-filename (vector-ref args 1))
 
-(define input-query (load-query-from-file input-filename))
+(define input-query (jsexpr->synth-query (string->jsexpr (vector-ref args 0))))
 
 (define result (make-synthesis-query input-query))
 
-(write-result-to-file output-filename result)
-
-(println "Success!")
-
+(displayln (jsexpr->string (query-result->jsexpr result)))
