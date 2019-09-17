@@ -5,7 +5,7 @@
 (require "model.rkt")
 
 (struct operator
-  (name call print) #:transparent)
+  (name call print) #:transparent #:mutable)
 
 (define (call-stream-insn op insn past-vars)
   ((operator-call op) insn past-vars))
@@ -179,7 +179,8 @@
 
 (define (zipwith-dc f xs1 xs2)
   (let ([xs-min (min (length xs1) (length xs2))])
-    (map f (take xs1 xs-min) (take xs2 xs-min))))
+    (for/all ([xs-min xs-min #:exhaustive])
+      (map f (take xs1 xs-min) (take xs2 xs-min)))))
 
 (define zipwith-dc-op
   (operator "zipwith-dc"
